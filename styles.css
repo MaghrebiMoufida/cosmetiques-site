@@ -1,19 +1,14 @@
-/* styles.css */
-
-/* Réinitialisation des marges et des espacements */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Styles pour le header */
 header {
     background-color: #333;
     padding: 20px;
 }
 
-/* Styles pour la navigation */
 nav ul {
     display: flex;
     justify-content: space-around;
@@ -25,7 +20,6 @@ nav ul li a {
     text-decoration: none;
 }
 
-/* Styles pour la section d'accueil */
 #home {
     padding: 50px;
     text-align: center;
@@ -50,7 +44,6 @@ nav ul li a {
     border-radius: 5px;
 }
 
-/* Styles pour la section des produits */
 #products {
     padding: 50px;
 }
@@ -73,7 +66,7 @@ nav ul li a {
 }
 
 #products img {
-    width: 100%;
+    width: 50%;
     height: auto;
 }
 
@@ -96,7 +89,6 @@ nav ul li a {
     border-radius: 5px;
 }
 
-/* Styles pour la section À propos de nous */
 #about {
     padding: 50px;
     text-align: center;
@@ -112,7 +104,6 @@ nav ul li a {
     margin-bottom: 20px;
 }
 
-/* Styles pour la section de contact */
 #contact {
     padding: 50px;
 }
