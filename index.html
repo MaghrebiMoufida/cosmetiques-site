@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Site Web de Produits Cosmétiques</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
+    <script src="scr.js"></script>
+    <script src="test1.js"></script>
 
 </head>
 <body>
@@ -32,7 +32,7 @@
                 <li>
                     <img src="img.jpg" alt="Product 1">
                     <h3>UVEBLOCK SPF 80</h3>
-                    <p>UVEBLOCK SPF 80 invisible Cream assure une protection immunitaire et cellulaire et une hydratation à court et à long termes.</p>
+                    <p class="hidden">UVEBLOCK SPF 80 invisible Cream assure une protection immunitaire et cellulaire et une hydratation à court et à long termes.</p>
                     <a href="#" class="learn-more-button">En savoir plus</a>
                 </li>
             </ul>
@@ -40,7 +40,7 @@
                 <li>
                     <img src="img1.jpg" alt="Product 2">
                     <h3>Avene Cleanance nettoyant</h3>
-                    <p>Avene Cleanance est un nettoyant sans savon pour Visage et corps permet de nettoyer délicatement votre peau 
+                    <p class="hidden">Avene Cleanance est un nettoyant sans savon pour Visage et corps permet de nettoyer délicatement votre peau 
                         grâce à sa base lavante douce. Aussi, il est MATIFIANT : La Monolaurine (brevet déposé) aide à diminuer l’excès de sébum.
                          APAISANT : L'Eau thermale d'Avène restitue toutes ses propriétés apaisantes et anti-irritantes.
                           L'Eau thermale d'Avène restitue toutes ses propriétés apaisantes et anti-irritantes. 
@@ -52,7 +52,7 @@
                 <li>
                     <img src="img2.jpg" alt="Product 3">
                     <h3>Ducray creme hydratante</h3>
-                    <p>Hydroxydécine, principe actif novateur, stimule 2 protéines structurelles de l'épiderme, 
+                    <p class="hidden">Hydroxydécine, principe actif novateur, stimule 2 protéines structurelles de l'épiderme, 
                         la filaggrine et l'involucrine, qui jouent un rôle majeur dans le mécanisme physiologique de l'hydratation.</p>
                     <a href="#" class="learn-more-button">En savoir plus</a>
                 </li>
@@ -61,7 +61,7 @@
                 <li>
                     <img src="img3.jpg" alt="Product 4">
                     <h3>Magic BB Crème</h3>
-                    <p>Nouveau Magic BB Crème teintée 5 en 1 : hydrate 24H*, unifie, lisse, illumine et protège.
+                    <p class="hidden">Nouveau Magic BB Crème teintée 5 en 1 : hydrate 24H*, unifie, lisse, illumine et protège.
                          Une formule infusée en vitamines B5 et E pour une peau d'apparence plus saine en 2 semaines.
                          Non comédogène, elle convient aux peaux sensibles et aux peaux grasses.</p>
                     <a href="#" class="learn-more-button">En savoir plus </a>
@@ -71,7 +71,7 @@
                 <li>
                     <img src="img4.jpg" alt="Product 5">
                     <h3>Gloss Kiko</h3>
-                    <p>Brillant à lèvres émollient effet 3D, pour un résultat brillant. 
+                    <p class="hidden">Brillant à lèvres émollient effet 3D, pour un résultat brillant. 
                         Sa texture, douce et sensorielle, fond sur vos lèvres et les laisse lisses et lumineuses.</p>
                     <a href="#" class="learn-more-button">En savoir plus</a>
                 </li>
@@ -80,7 +80,7 @@
                 <li>
                     <img src="img5.jpg" alt="Product 6">
                     <h3>Mascara</h3>
-                    <p>Le Mascara volume vertige effet recourbe cils est l'association experte entre la Brosse Réservoir
+                    <p class="hidden">Le Mascara volume vertige effet recourbe cils est l'association experte entre la Brosse Réservoir
                         qui délivre la dose optimale de texture pour maximiser et intensifier le volume des cils et
                          une formule aussi performante que l’effet d’un recourbe cils</p>
                     <a href="#" class="learn-more-button">En savoir plus</a>
@@ -90,7 +90,7 @@
                 <li>
                     <img src="img6.jpg" alt="Product 7">
                     <h3>VICHY Liftactiv Collagen</h3>
-                    <p>VICHY Liftactiv Collagen Specialist Creme de Jour Anti Age apporte une solution à la perte de fermeté et au 
+                    <p class="hidden">VICHY Liftactiv Collagen Specialist Creme de Jour Anti Age apporte une solution à la perte de fermeté et au 
                         manque d’éclat dont peuvent souffrir les peaux qui ont un déficit en collagène. 
                         Lift active collagene vichy traite les différents signes de l'âge : rides, tonicité, éclat, 
                         teint et convient à tous types de peau. </p>
@@ -104,7 +104,7 @@
         </section>
         <section id="contact">
             <h2>Contactez-nous</h2>
-            <p>Si vous avez des questions ou des commentaires vous pouvez nous contacter en utilisant le formulaire ci-dessous. </p>
+            <p >Si vous avez des questions ou des commentaires vous pouvez nous contacter en utilisant le formulaire ci-dessous. </p>
             <form action="submit-form.php" method="post">
                 <label for="name">Nom:</label>
                 <input type="text" id="name" name="name" required>
@@ -116,5 +116,22 @@
             </form>
         </section>
     </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all the "En savoir plus" buttons
+            var learnMoreButtons = document.querySelectorAll('.learn-more-button');
+        
+            // Add an event listener to each button
+            learnMoreButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    // Get the corresponding paragraph
+                    var paragraph = this.previousElementSibling;
+                    // Toggle the 'hidden' class to show/hide the paragraph
+                    paragraph.classList.toggle('hidden');
+                });
+            });
+        });
+        </script>
 </body>
 </html>
