@@ -1,120 +1,150 @@
-// Get all the "En savoir plus" buttons
-const learnMoreButtons = document.querySelectorAll('.learn-more-button');
-
-// Add an event listener to each button
-learnMoreButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    // Create a new modal element
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-
-    // Create a new close button
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('close-button');
-    closeButton.textContent = 'Fermer';
-    closeButton.addEventListener('click', () => {
-      modal.remove();
-    });
-
-    // Create a new modal content element
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
-
-    // Add the close button to the modal content
-    modalContent.appendChild(closeButton);
-
-    // Add the content to the modal content
-    const productName = button.parentElement.querySelector('h3').textContent;
-    const productDescription = button.parentElement.querySelector('p').textContent;
-    const productImage = button.parentElement.querySelector('img').src;
-
-    const productContent = document.createElement('div');
-    productContent.classList.add('product-content');
-
-    const productImageElement = document.createElement('img');
-    productImageElement.src = productImage;
-    productImageElement.alt = productName;
-    productContent.appendChild(productImageElement);
-
-    const productTitle = document.createElement('h3');
-    productTitle.textContent = productName;
-    productContent.appendChild(productTitle);
-
-    const productDescriptionElement = document.createElement('p');
-    productDescriptionElement.textContent = productDescription;
-    productContent.appendChild(productDescriptionElement);
-
-    modalContent.appendChild(productContent);
-
-    // Add the modal content to the modal
-    modal.appendChild(modalContent);
-
-    // Add the modal to the body
-    document.body.appendChild(modal);
-  });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Get all the "Envoyer" buttons
-    var sendButtons = document.querySelectorAll('.send-button');
-
-    // Add an event listener to each button
-    sendButtons.forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            // Get the corresponding paragraph
-            var paragraph = this.previousElementSibling;
-            // Toggle the 'hidden' class to show/hide the paragraph
-            paragraph.classList.toggle('hidden');
+document.addEventListener('DOMContentLoaded', () => {
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
         });
-    });
-
-
-    // Create a new modal element
-    const modal = document.createElement('div');
-    modal.classList.add('modal');
-
-    // Create a new close button
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('close-button');
-    closeButton.textContent = 'Fermer';
-    closeButton.addEventListener('click'), () => {
-      modal.remove();
     }
 
-    // Create a new modal content element
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
+    // Carousel
+    const carouselInner = document.querySelector('.carousel-inner');
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const prevBtn = document.querySelector('.carousel-prev');
+    const nextBtn = document.querySelector('.carousel-next');
+    let currentIndex = 0;
 
-    // Add the close button to the modal content
-    modalContent.appendChild(closeButton);
+    if (carouselInner && carouselItems.length > 0 && prevBtn && nextBtn) {
+        function updateCarousel() {
+            carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
 
-    // Add the content to the modal content
-    const productName = button.parentElement.querySelector('h3').textContent;
-    const productDescription = button.parentElement.querySelector('p').textContent;
-    const productImage = button.parentElement.querySelector('img').src;
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % carouselItems.length;
+            updateCarousel();
+        });
 
-    const productContent = document.createElement('div');
-    productContent.classList.add('product-content');
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + carouselItems.length) % carouselItems.length;
+            updateCarousel();
+        });
+    }
 
-    const productImageElement = document.createElement('img');
-    productImageElement.src = productImage;
-    productImageElement.alt = productName;
-    productContent.appendChild(productImageElement);
+    // Modals pour "En savoir plus"
+    const learnMoreButtons = document.querySelectorAll('.learn-more-button');
+    if (learnMoreButtons.length > 0) {
+        learnMoreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const product = button.parentElement;
+                const name = product.querySelector('h3')?.textContent || 'Produit inconnu';
+                const description = product.querySelector('p')?.textContent || 'Description non disponible';
+                const image = product.querySelector('img')?.src || '';
 
-    const productTitle = document.createElement('h3');
-    productTitle.textContent = productName;
-    productContent.appendChild(productTitle);
+                const modal = document.createElement('div');
+                modal.classList.add('modal', 'active');
 
-    const productDescriptionElement = document.createElement('p');
-    productDescriptionElement.textContent = productDescription;
-    productContent.appendChild(productDescriptionElement);
+                const modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
 
-    modalContent.appendChild(productContent);
+                const closeButton = document.createElement('button');
+                closeButton.classList.add('close-button');
+                closeButton.textContent = 'Fermer';
+                closeButton.addEventListener('click', () => modal.remove());
 
-    // Add the modal content to the modal
-    modal.appendChild(modalContent);
+                modalContent.innerHTML = `
+                    <img src="${image}" alt="${name}" loading="lazy" style="max-width: 100%; height: auto;">
+                    <h3>${name}</h3>
+                    <p>${description}</p>
+                `;
+                modalContent.appendChild(closeButton);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            });
+        });
+    }
 
-    // Add the modal to the body
-    document.body.appendChild(modal);
-  });
+    // Panier pour "Ajouter au panier" et gestion moderne
+    const cartItems = document.getElementById('cart-items');
+    const cartTotal = document.getElementById('cart-total');
+    const checkoutButton = document.getElementById('checkout-button');
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cartItems && cartTotal && checkoutButton) {
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${item.name} - ${item.price} €
+                    <button class="remove-item" data-index="${index}">Supprimer</button>
+                `;
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+            cartTotal.textContent = total || '0';
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Ajouter les écouteurs pour les boutons "Supprimer"
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', () => {
+                    const index = parseInt(button.dataset.index);
+                    cart.splice(index, 1); // Supprimer l'article
+                    updateCart(); // Mettre à jour le panier
+                });
+            });
+        }
+
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        if (addToCartButtons.length > 0) {
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const product = button.dataset.product;
+                    const price = parseInt(button.dataset.price) || 0;
+                    if (product && price) {
+                        cart.push({ name: product, price });
+                        updateCart();
+                    }
+                });
+            });
+        }
+
+        // Bouton "Payer"
+        checkoutButton.addEventListener('click', () => {
+            if (cart.length > 0) {
+                alert('Paiement simulé ! Total : ' + cartTotal.textContent + ' €. (Fonctionnalité fictive sans backend)');
+                cart = []; // Vider le panier après "paiement"
+                updateCart();
+            } else {
+                alert('Votre panier est vide !');
+            }
+        });
+
+        updateCart();
+    }
+
+    // Recherche et filtre
+    const searchInput = document.getElementById('search');
+    const categoryFilter = document.getElementById('category-filter');
+    const products = document.querySelectorAll('.product-grid li');
+
+    if (searchInput && categoryFilter && products.length > 0) {
+        function filterProducts() {
+            const searchText = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+
+            products.forEach(product => {
+                const name = product.querySelector('h3')?.textContent.toLowerCase() || '';
+                const productCategory = product.dataset.category || 'all';
+                const matchesSearch = name.includes(searchText);
+                const matchesCategory = category === 'all' || productCategory === category;
+                product.style.display = matchesSearch && matchesCategory ? 'block' : 'none';
+            });
+        }
+
+        searchInput.addEventListener('input', filterProducts);
+        categoryFilter.addEventListener('change', filterProducts);
+        filterProducts(); // Appliquer au chargement
+    }
+});
